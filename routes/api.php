@@ -16,6 +16,9 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::post('/register','Api\AuthController@register');
+
+Route::post('/login','Api\AuthController@login');
 
 Route::apiResource('/customers','CustomersController');
 
@@ -25,9 +28,11 @@ Route::apiResource('/locations','LocationsController');
 
 Route::apiResource('/hotels','HotelsController');
 
-Route::group(['prefix'=>'Hotels'], function () {
-
-	Route::apiResource('/{hotel}/rooms','RoomsController');
+Route::group(['prefix'=>'hotels'],function(){
+	Route::apiResource('/{hotels}/rooms','RoomsController');
+});
+Route::group(['prefix'=>'hotels'],function(){
+	Route::apiResource('/{hotels}/rooms/{rooms}/book','RoomsController');
 });
 
-Route::apiResource('/Bookings','BookingsController');
+Route::apiResource('/bookings','BookingsController');

@@ -31,7 +31,7 @@ class HotelsResource extends JsonResource
         return [
             'id'=> $this->id,
             'name'=> $this->hotel_name,
-            'rating'=>$this->hotel_rating,
+            'rating'=>$this->hotel_rating == 0 ? 'No Rating':$this->hotel_rating,
             'category'=>$this->hotel_category,
             'location'=>array(
                 "id"=> $this->locations->id,
@@ -45,7 +45,10 @@ class HotelsResource extends JsonResource
             'reputation'=>$this->reputation,
             'reputationBadge'=>$this->getBadge(),
             'price'=>$this->getMinimumRoomPrice(),
-            "availability"=>$this->getAvailability(),
+            "availability"=>$this->getAvailability() == 0 ? 'Not Avialable':$this->getAvailability(),
+            "href" =>[
+                    'link'=> route('rooms.index',$this->id)
+                ]
             ];
     }
 }

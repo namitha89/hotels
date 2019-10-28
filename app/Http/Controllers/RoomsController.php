@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Model\Hotels;
 use App\Model\Rooms;
+use App\Http\Resources\RoomsResource;
 use Illuminate\Http\Request;
 
 class RoomsController extends Controller
@@ -12,9 +14,12 @@ class RoomsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Hotels $hotels)
     {
         //
+        // echo '<pre/>';print_r($hotels);die;
+        return RoomsResource::collection($hotels->rooms->where('room_status', 'available'));
+        
     }
 
     /**
@@ -47,6 +52,7 @@ class RoomsController extends Controller
     public function show(Rooms $rooms)
     {
         //
+        return new RoomsResource($rooms);
     }
 
     /**

@@ -4,7 +4,7 @@ namespace App\Model;
 
 use App\Model\Hoteliers;
 use App\Model\Locations;
-use DB;
+use App\Model\Rooms;
 use Illuminate\Database\Eloquent\Model;
 
 class Hotels extends Model
@@ -17,7 +17,7 @@ class Hotels extends Model
 
     public function rooms(){
 
-    	return $this->hasMany('App\Model\Rooms',"hotel_id");
+    	return $this->hasMany('App\Model\Rooms',"hotels_id");
     }
 
     public function getMinimumRoomPrice(){

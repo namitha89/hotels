@@ -18,8 +18,8 @@ class CreateRoomsTable extends Migration
             $table->string('room_name');
             $table->enum('room_type', ['single', 'double','triple','quad','queen','king']);
             $table->integer('room_price');
-            $table->integer('hotel_id')->unsigned();
-            $table->foreign('hotel_id')->references('id')->on('hotels')->onDelete('cascade');
+            $table->integer('hotels_id')->unsigned()->index;
+            $table->foreign('hotels_id')->references('id')->on('hotels')->onDelete('cascade');
             $table->enum('room_status', ['available', 'booked']);
             $table->timestamps();
         });
