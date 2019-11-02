@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Model\Customers;
 use Illuminate\Http\Request;
+use App\Http\Resources\CustomersResource;
+use DB;
+use Illuminate\Http\Response;
 
 class CustomersController extends Controller
 {
@@ -15,6 +18,8 @@ class CustomersController extends Controller
     public function index()
     {
         //
+        $results = DB::table('Customers')->get();
+        return CustomersResource::collection($results);
     }
 
     /**
@@ -25,6 +30,7 @@ class CustomersController extends Controller
     public function create()
     {
         //
+        
     }
 
     /**
@@ -36,6 +42,13 @@ class CustomersController extends Controller
     public function store(Request $request)
     {
         //
+        $customer = new Customers();
+        $customer->customer_name = $request->name;
+        $customer->customer_email = $request->email;
+        $customer->save();
+        return Response([
+            'data' => new CustomersResource($customer)
+        ],Response::HTTP_CREATED);
     }
 
     /**
@@ -44,9 +57,10 @@ class CustomersController extends Controller
      * @param  \App\Model\Customers  $customers
      * @return \Illuminate\Http\Response
      */
-    public function show(Customers $customers)
+    public function show(Customers $customer)
     {
         //
+        return new CustomersResource($customer);
     }
 
     /**
@@ -67,9 +81,17 @@ class CustomersController extends Controller
      * @param  \App\Model\Customers  $customers
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Customers $customers)
+    public function update(Request $request, Customers $customer)
     {
         //
+        $request['customer_name'] = $request->name;
+        $request['customer_email'] = $request->email;
+        unset($request['zip_code']);
+        $customer->update($request->all());
+
+        return Response([
+            'data' => new CustomersResource($customer)
+        ],Response::HTTP_CREATED);
     }
 
     /**

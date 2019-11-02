@@ -20,11 +20,10 @@ class CreateHotelsTable extends Migration
             $table->enum('hotel_category', ['hotel', 'alternative', 'hostel', 'lodge', 'resort', 'guest-house']);  
             $table->string('image');
             $table->integer('reputation');
-            $table->integer('hotelier_id')->unsigned();
-            $table->foreign('hotelier_id')->references('id')->on('hoteliers')->onDelete('cascade');
             $table->integer('location_id')->unsigned();
-            $table->foreign('location_id')->references('id')->on('locations')->onDelete('cascade');
-            //$table->enum('hotel_status', ['active', 'inactive']); 
+            $table->foreign('location_id')->references('id')->on('locations');
+            $table->integer('user_id')->unsigned()->index();
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

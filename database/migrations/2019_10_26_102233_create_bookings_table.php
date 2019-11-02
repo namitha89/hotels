@@ -16,11 +16,11 @@ class CreateBookingsTable extends Migration
         Schema::create('bookings', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('hotel_id')->unsigned();
-            $table->foreign('hotel_id')->references('id')->on('hotels')->onDelete('cascade');
+            $table->foreign('hotel_id')->references('id')->on('hotels');
             $table->integer('room_id')->unsigned();
-            $table->foreign('room_id')->references('id')->on('rooms')->onDelete('cascade');
+            $table->foreign('room_id')->references('id')->on('rooms');
             $table->integer('customer_id')->unsigned();
-            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
+            $table->foreign('customer_id')->references('id')->on('customers');
             $table->enum('booking_status', ['booked', 'pending','failed']);  
             $table->timestamps();
         });

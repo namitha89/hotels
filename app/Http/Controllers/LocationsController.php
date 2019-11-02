@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Model\Locations;
 use Illuminate\Http\Request;
+use App\Http\Resources\LocationsResource;
+use Illuminate\Http\Response;
+use DB;
 
 class LocationsController extends Controller
 {
@@ -15,6 +18,8 @@ class LocationsController extends Controller
     public function index()
     {
         //
+        $results = DB::table('Locations')->get();
+        return LocationsResource::collection($results);
     }
 
     /**
@@ -36,6 +41,17 @@ class LocationsController extends Controller
     public function store(Request $request)
     {
         //
+    
+        $location = new Locations();
+        $location->city = $request->city;
+        $location->state = $request->state;
+        $location->country = $request->country;
+        $location->postalcode = $request->zip_code;
+        $location->address = $request->address;
+        $location->save();
+        return Response([
+            'data' => new LocationsResource($location)
+        ],Response::HTTP_CREATED);
     }
 
     /**
@@ -44,9 +60,10 @@ class LocationsController extends Controller
      * @param  \App\Model\Locations  $locations
      * @return \Illuminate\Http\Response
      */
-    public function show(Locations $locations)
+    public function show(Locations $location)
     {
         //
+        return new LocationsResource($location);
     }
 
     /**
@@ -67,9 +84,17 @@ class LocationsController extends Controller
      * @param  \App\Model\Locations  $locations
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Locations $locations)
+    public function update(Request $request, Locations $location)
     {
         //
+
+        $request['postalcode'] = $request->zip_code;
+        unset($request['zip_code']);
+        $location->update($request->all());
+
+        return Response([
+            'data' => new LocationsResource($location)
+        ],Response::HTTP_CREATED);
     }
 
     /**

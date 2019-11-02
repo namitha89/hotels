@@ -2,7 +2,6 @@
 
 namespace App\Model;
 
-use App\Model\Hoteliers;
 use App\Model\Locations;
 use App\Model\Rooms;
 use Illuminate\Database\Eloquent\Model;
@@ -10,6 +9,10 @@ use Illuminate\Database\Eloquent\Model;
 class Hotels extends Model
 {
     //
+    protected $fillable = [
+        'hotel_name','hotel_rating','hotel_category','image','reputation','hotelier','location_id'
+    ];
+
     public function locations(){
 
     	return $this->belongsTo('App\Model\Locations', "location_id");

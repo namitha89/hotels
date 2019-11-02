@@ -22,6 +22,14 @@ class HotelsResource extends JsonResource
         }
         return $badge;
     }
+    public function getRooms(){
+        $roomsHref = [];
+        foreach ($this->rooms as $room) {
+            array_push($roomsHref, route('rooms.index', $room->id));
+        }
+        return $roomsHref;
+        
+    }
 
     public function toArray($request)
     {
@@ -45,10 +53,8 @@ class HotelsResource extends JsonResource
             'reputation'=>$this->reputation,
             'reputationBadge'=>$this->getBadge(),
             'price'=>$this->getMinimumRoomPrice(),
-            "availability"=>$this->getAvailability() == 0 ? 'Not Avialable':$this->getAvailability(),
-            "href" =>[
-                    'link'=> route('rooms.index',$this->id)
-                ]
+            //"availability"=>$this->getAvailability() == 0 ? 'Not Avialable':$this->getAvailability(),
+            "rooms" => $this->getRooms(),
             ];
     }
 }

@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Model\Bookings;
+use App\Model\Rooms;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use DB;
 
 class BookingsController extends Controller
 {
@@ -36,6 +39,38 @@ class BookingsController extends Controller
     public function store(Request $request)
     {
         //
+
+        $book = new Bookings();
+        //check the room status
+        $room = DB::table('Rooms')
+                ->where('id', $request->room_id)
+                ->select('room_status')
+                ->get();
+        $status = $room[0]->room_status;
+       
+        if(isset($status) && $status == "available"){
+            
+            $book->hotel_id = $request->hotel_id;
+            $book->room_id = $request->room_id;
+            $book->customer_id = $request->customer_id;
+            $book->booking_status = 'booked';
+            $book->save();
+
+            DB::table('Rooms')
+            ->where('id', $book->room_id)
+            ->update(['room_status' => 'booked']);
+            
+            return Response([
+                'data' => 'Booking successful',
+            ], Response::HTTP_CREATED);  
+
+        }else{
+
+            return Response([
+                'errors' =>'Room is not available',
+            ], Response::HTTP_UNPROCESSABLE_ENTITY); 
+           
+        }
     }
 
     /**

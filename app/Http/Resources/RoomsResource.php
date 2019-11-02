@@ -21,9 +21,6 @@ class RoomsResource extends JsonResource
             'roomprice'=> $this->room_price,
             'roomstatus' => $this->room_status,
             'hotel_name'=> $this->getHotelName(),
-            "book" =>[
-                    // 'link'=> route('book.show',$this->id),
-                ]
             ];
     }
 }

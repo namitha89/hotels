@@ -17,7 +17,6 @@ class CreateCustomersTable extends Migration
             $table->bigIncrements('id');
             $table->string('customer_name');
             $table->string('customer_email')->unique();
-            // $table->enum('customer_status', ['active', 'inactive']);  
             $table->timestamps();
         });
     }

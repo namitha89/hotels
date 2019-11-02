@@ -20,7 +20,6 @@ class CreateLocationsTable extends Migration
             $table->string('country');
             $table->string('postalcode');
             $table->string('address');
-            //$table->enum('status', ['active', 'inactive']);    
             $table->timestamps();
         });
     }

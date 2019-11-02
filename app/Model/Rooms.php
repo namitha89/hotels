@@ -9,6 +9,10 @@ use Illuminate\Database\Eloquent\Model;
 class Rooms extends Model
 {
     //
+    protected $fillable = [
+        'room_name','room_type','room_price','hotels_id','room_status'
+    ];
+
     public function hotels()
     {
         return $this->belongsTo(Hotels::class);

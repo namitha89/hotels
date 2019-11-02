@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Model\Hotels;
+use App\Exceptions\ProductNotBelongsToUser;
+use App\Http\Requests\HotelsRequest;
 use App\Http\Resources\Hotels\HotelsResource;
+use App\Model\Hotels;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class HotelsController extends Controller
 {
@@ -13,6 +17,12 @@ class HotelsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    // public function __construct(){
+
+    //     $this->middleware('auth:api')->except('index','show');
+
+    // }
+
     public function index()
     {
 
@@ -36,9 +46,23 @@ class HotelsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(HotelsRequest $request)
     {
-        //
+
+        $hotel = new Hotels();
+        $hotel->hotel_name = $request->name;
+        $hotel->hotel_rating = $request->rating;
+        $hotel->hotel_category = $request->category;
+        $hotel->image = $request->image;
+        $hotel->reputation = $request->reputation;
+        $hotel->location_id = $request->location_id;
+        $hotel->user_id = $request->user_id;
+        $hotel->save();
+
+        return Response([
+            'data' => new HotelsResource($hotel),
+
+        ], Response::HTTP_CREATED);
     }
 
     /**
@@ -71,9 +95,23 @@ class HotelsController extends Controller
      * @param  \App\Model\Hotels  $hotels
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Hotels $hotels)
+    public function update(Request $request, Hotels $hotel)
     {
         //
+        $this->hotelCheck($hotel);
+        $request['hotel_name'] = $request->name;
+        $request['hotel_rating'] = $request->rating;
+        $request['hotel_category'] = $request->category;
+        unset($request['name']);
+        unset($request['rating']);
+        unset($request['category']);
+
+        $hotel->update($request->all());
+
+        return Response([
+            'data' => new HotelsResource($hotel),
+
+        ], Response::HTTP_CREATED);
     }
 
     /**
@@ -82,8 +120,18 @@ class HotelsController extends Controller
      * @param  \App\Model\Hotels  $hotels
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Hotels $hotels)
+    public function destroy(Hotels $hotel)
     {
         //
+        $this->hotelCheck($hotel);
+        $hotel->delete();
+        return response(null, Response::HTTP_NO_CONTENT);
+    }
+
+    public function hotelCheck($hotel)
+    {
+        if (Auth::id() !== $hotel->user_id) {
+            throw new ProductNotBelongsToUser;
+        }
     }
 }
