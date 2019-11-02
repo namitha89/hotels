@@ -72,6 +72,25 @@ Install the dependencies and -,.,devDependencies- and start the server.
 
 ```sh
 127.0.0.1:80
+http://127.0.0.1:80/api/register -- post method
+http://127.0.0.1:80/api/login -- post method
+http://127.0.0.1:80/api/user -- get method
+http://127.0.0.1:80/api/locations -- -- post method to create locations
+http://127.0.0.1:80/api/locations/id -- -- put method to update location
+http://127.0.0.1:80/api/locations/id -- -- get method to check single location
+http://127.0.0.1:80/api/register -- post method for oauth registration(Hotelier)
+http://127.0.0.1:80/api/login -- post method for oauth login (Hotelier)
+http://127.0.0.1:80/api/hotels -- -- post method to create hotel
+http://127.0.0.1:80/api/hotels -- -- get method to get hotels list
+http://127.0.0.1:80/api/hotels/id -- -- put method to update hotel
+http://127.0.0.1:80/api/hotels/id -- -- delete method to delete hotel
+http://127.0.0.1:80/api/rooms/id -- -- put method to update hotel
+http://127.0.0.1:80/api/rooms/id -- -- get method to get single room
+http://127.0.0.1:80/api/rooms/id -- -- delete method to get delete room
+http://127.0.0.1:80/api/customers -- -- post method to create customer
+http://127.0.0.1:80/api/customers -- -- get method to get customers list
+http://127.0.0.1:80/api/customers/id -- -- put method to update customer
+http://127.0.0.1:80/api/booking -- -- post  method to book room
 ```
 
 
